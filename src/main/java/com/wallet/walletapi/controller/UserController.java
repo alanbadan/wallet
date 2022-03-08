@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wallet.walletapi.bcrypt.Bcrypt;
 import com.wallet.walletapi.dto.UserDto;
 import com.wallet.walletapi.entity.User;
 import com.wallet.walletapi.response.Response;
@@ -42,15 +44,15 @@ public class UserController {
 		user.setId(dto.getId());
 		user.setEmail(dto.getEmail());
 		user.setName(dto.getName());
-		user.setPassword(dto.getPassword());
+		user.setPassword(Bcrypt.gethas(dto.getPassword()));//passando a criptogracao 
 		return user;
 	}
-	private UserDto convertEntityToDto(User user) {
+	private UserDto convertEntityToDto(User user) {  // aqui se faz o payloado de resposta
 		UserDto dto = new UserDto();
 		dto.setId(user.getId());
 		dto.setEmail(user.getEmail());
 		dto.setName(user.getName());
-		dto.setPassword(user.getPassword());
+	//	dto.setPassword(user.getPassword()); aqui ele retorna a senha criptogarafada no payload (descomentada), comnetada com esta ele retorna NULL , vamos no dto implematar a anotacao JsonInclude
 		return dto;
 	}
 

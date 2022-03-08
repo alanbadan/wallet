@@ -54,7 +54,7 @@ public class UserControllerTest { //teste andPoint User
 		           .andExpect(jsonPath("$.data.id").value(ID))// confirmando se os dados estaso cortor entre o que esta recebendo e o esperadpo
 		           .andExpect(jsonPath("$.data.email").value(EMAIL))// confirmando se os dados estaso cortor entre o que esta recebendo e o esperadpo
 		           .andExpect(jsonPath("$.data.name").value(NAME))// confirmando se os dados estaso cortor entre o que esta recebendo e o esperadpo
-		           .andExpect(jsonPath("$.data.password").value(PASSWORD));// confirmando se os dados estaso cortor entre o que esta recebendo e o esperadpo
+		           .andExpect(jsonPath("$.data.password").doesNotExist());// para nao mostrar a senha do usuario no payload
 	}
 	//metodo para validar um usuario errado
 	@Test
