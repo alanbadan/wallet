@@ -25,9 +25,13 @@ public class UserController {
 	
 	                
 	@PostMapping                                                            //guade todoas as vaildacoes feitas no metodo no caso dto e podemos fazer noassas prorpias validacoes
-	public ResponseEntity<Response<UserDto>> create (@Valid @RequestBody UserDto dto, BindingResult result){
+	public ResponseEntity<Response<UserDto>> create (@Valid @RequestBody UserDto dto, BindingResult result){ // se as vaidacoes nao passarem ficarao no result
 		
 		Response<UserDto> response = new Response<UserDto>();
+		if (result.hasErrors()) {
+			result.getAllErrors().forEach(e -> response.getErros().add(e.getDefaultMessage())); // lambda para retornar a mensagem de erro do response
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
 		User user = userService.save(this.convertDtoToEntity(dto)); //precisa converter userDto em user
 		response.setData(this.convertEntityToDto(user)); //convertendo para dto pq o reponse espera um dto e nao um user
 		
@@ -35,6 +39,7 @@ public class UserController {
 	}
 	private User convertDtoToEntity(UserDto dto) {
 		User user = new User();
+		user.setId(dto.getId());
 		user.setEmail(dto.getEmail());
 		user.setName(dto.getName());
 		user.setPassword(dto.getPassword());
@@ -42,6 +47,7 @@ public class UserController {
 	}
 	private UserDto convertEntityToDto(User user) {
 		UserDto dto = new UserDto();
+		dto.setId(user.getId());
 		dto.setEmail(user.getEmail());
 		dto.setName(user.getName());
 		dto.setPassword(user.getPassword());

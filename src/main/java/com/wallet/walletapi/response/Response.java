@@ -1,5 +1,6 @@
 package com.wallet.walletapi.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -15,4 +16,11 @@ public class Response<T> { // do tipo T sera utilizada no momentpo da utilizaça
 	private T data; // retorno na api(useuasrio , carteira...
 	private List<String> erros; //caso de erro(validadcao...) retorna um padrao de resposta
 
+	//metdod para retornar um array vazio caso ele esteja null
+	public List<String> getErros() {
+		if( this.erros == null) {
+			this.erros = new ArrayList<String>();
+		}
+		return erros;
+	}
 }
