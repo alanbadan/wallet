@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.wallet.walletapi.enums.TypeEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,7 +39,8 @@ public class WalletItem implements Serializable {
     @NotNull
     private Date date;
     @NotNull
-    private String type;
+    @Enumerated(EnumType.STRING) // passando o tipo do enum
+    private TypeEnum type;
     @NotNull
     private String descripition;
     @NotNull

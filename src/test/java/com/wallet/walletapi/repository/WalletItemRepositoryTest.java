@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.wallet.walletapi.entity.Wallet;
 import com.wallet.walletapi.entity.WalletItem;
+import com.wallet.walletapi.enums.TypeEnum;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,7 +24,7 @@ import com.wallet.walletapi.entity.WalletItem;
 public class WalletItemRepositoryTest {
 	
 	private static final Date DATE = new Date();
-	private static final String TYPE = "ENTRADA";
+	private static final TypeEnum TYPE = TypeEnum.EN;
 	private static final String DESCRIPTION = "CONTA DE LUZ";
 	private static final Long VALUE = Long.valueOf(65);
 		
