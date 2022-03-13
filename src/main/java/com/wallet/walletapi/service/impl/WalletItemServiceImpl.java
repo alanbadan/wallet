@@ -37,7 +37,7 @@ public class WalletItemServiceImpl implements WalletItemService {
 	public Page<WalletItem> findBetweenDates(Long wallet, Date start, Date end, int page) {
 		
 		@SuppressWarnings("deprecation")  // a pagina que quero buscar , e a quant. de item por pagina
-		PageRequest pg = new PageRequest(page, itemsPerPage);
+		PageRequest pg = PageRequest.of(page, itemsPerPage);
 		
 		return  walletItemRepository.findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual(wallet, start, end, pg);
 	}

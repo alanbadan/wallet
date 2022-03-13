@@ -137,7 +137,8 @@ public class WalletItemRepositoryTest {
     	walletItemRepository.save(new WalletItem(null, w.get(), currentDatePlusSevenDays, TYPE, DESCRIPTION, VALUE));
     	
     	//Paginando
-    	PageRequest pg = new PageRequest(0, 10); // parametro 10 é a quantidade por pagina                              //waalet salva, data da constatnte, data +5 dias, paginacao
+    	//Pageable pg = PageRequest.of(0, 10);
+    	PageRequest pg =  PageRequest.of(0, 10); // parametro 10 é a quantidade por pagina   // pagerequeste vc nao da new e sim .of( pq é protected)                           //waalet salva, data da constatnte, data +5 dias, paginacao
     	Page<WalletItem> response = walletItemRepository.findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual(savedWalletId, DATE, currentDatePlusFiveDays, pg);
     	             //response de retorno no payload  
     	assertEquals(response.getContent().size(), 2); //conteudo
