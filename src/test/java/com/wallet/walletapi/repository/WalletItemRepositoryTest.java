@@ -1,10 +1,16 @@
 package com.wallet.walletapi.repository;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
@@ -15,7 +21,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.expression.spel.ast.OpAnd;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -32,7 +39,7 @@ public class WalletItemRepositoryTest {
 	private static final Date DATE = new Date();
 	private static final TypeEnum TYPE = TypeEnum.EN;
 	private static final String DESCRIPTION = "CONTA DE LUZ";
-	private static final Long VALUE = Long.valueOf(65);
+	private static final BigDecimal VALUE = BigDecimal.valueOf(65);
 	private Long savedWalletItemId = null;
 	private Long savedWalletId = null;
 		
@@ -47,7 +54,7 @@ public class WalletItemRepositoryTest {
 	public void SetUp() {
 		Wallet w = new Wallet();
 		w.setName("Carterira Teste");
-		w.setValue(Long.valueOf(250));
+		w.setValue(BigDecimal.valueOf(250));
 		walletRepository.save(w); //criando e salvando uma carteira
 		
 		WalletItem wi = new WalletItem(null, w, DATE, TYPE, DESCRIPTION, VALUE);
@@ -70,7 +77,7 @@ public class WalletItemRepositoryTest {
 		
 		Wallet w = new Wallet(); //instanciando uma nova carteira
 		w.setName("Carteira");
-		w.setValue(Long.valueOf(500));
+		w.setValue(BigDecimal.valueOf(250));
 		walletRepository.save(w); // usando a iterface para salvaar uma nova carteira, que vai ser recebida no construtor abaixo
 		
 		
@@ -91,7 +98,7 @@ public class WalletItemRepositoryTest {
 	}
 	@Test
 	public void testUpDate() {
-		Optional<WalletItem> wi = walletItemRepository.findById(savedWalletId); // recebendo o id vindo do setUp
+		Optional<WalletItem> wi = walletItemRepository.findById(savedWalletItemId); // recebendo o id vindo do setUp
 		
 		String description = "Descricao alterada";
 		
@@ -100,7 +107,7 @@ public class WalletItemRepositoryTest {
 		
 		walletItemRepository.save(changed); //deppis de alterar a descricao , aeui esta salvando
 		
-		Optional<WalletItem> newWalletItem = walletItemRepository.findById(savedWalletId); // resgatando a walletitem novamente
+		Optional<WalletItem> newWalletItem = walletItemRepository.findById(savedWalletItemId); // resgatando a walletitem novamente
 		
 		assertEquals(description, newWalletItem.get().getDescripition());// comparando a descricao(String) esperada com a salva mo banco de dados
 	}
@@ -116,5 +123,60 @@ public class WalletItemRepositoryTest {
 		
 		assertFalse(response.isPresent());// comparando se esa vindo vasio
 	}
-
+    @Test
+    public void testBetweenDates() {
+    	
+    	Optional<Wallet> w = walletRepository.findById(savedWalletId); //regatando a waalwt inserida no Before
+    	
+    	LocalDateTime ldt = DATE.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();//pegando a data atual conforme declarado na constante
+    	
+    	Date currentDatePlusFiveDays = Date.from(ldt.plusDays(5).atZone(ZoneId.systemDefault()).toInstant());// pegando a data atual e adicionabdo 5 dias ao LocaldateTIme e atribuindo ao Date
+    	Date currentDatePlusSevenDays = Date.from(ldt.plusDays(7).atZone(ZoneId.systemDefault()).toInstant());
+    	
+    	walletItemRepository.save(new WalletItem(null,w.get(), currentDatePlusFiveDays, TYPE, DESCRIPTION, VALUE));// criando nova WaletItem e adicionado a data + 5 dias
+    	walletItemRepository.save(new WalletItem(null, w.get(), currentDatePlusSevenDays, TYPE, DESCRIPTION, VALUE));
+    	
+    	//Paginando
+    	PageRequest pg = new PageRequest(0, 10); // parametro 10 é a quantidade por pagina                              //waalet salva, data da constatnte, data +5 dias, paginacao
+    	Page<WalletItem> response = walletItemRepository.findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual(savedWalletId, DATE, currentDatePlusFiveDays, pg);
+    	             //response de retorno no payload  
+    	assertEquals(response.getContent().size(), 2); //conteudo
+    	assertEquals(response.getTotalElements(), 2); // os elementos                                                                                        ^
+    	assertEquals(response.getContent().get(0).getWallet().getId(), savedWalletId);// pegando a waalet no primeiro eleneto e vendo se o mesmo salvo acima |
+    	
+    }
+    @Test
+    public void testeFindByType() {
+    	List<WalletItem> response = walletItemRepository.findWalletIdAndType(savedWalletId, TYPE);// buscando a carteira e passando a cobstatnte definida
+    	
+    	assertEquals(response.size(), 1);// peagando o tambho da lista
+    	assertEquals(response.get(0).getType(), TYPE);//  0 index , dando um get no response pra pegar o type e deve ser o mesmo passado no parametro
+    	
+    }
+    @Test
+    public void testFinByTypeSd() { // metodo para confereri se esta trazendo um tipo diferente, buscando um tipo diferente
+    	
+    	Optional<Wallet> w = walletRepository.findById(savedWalletId);
+    	// salvando uma nova walletItem , se que com um tipo diferente
+    	walletItemRepository.save(new WalletItem(null, w.get(), DATE, TypeEnum.SD, DESCRIPTION, VALUE));
+    	// fazendo a co ndulta pelo tipo passado no parametro
+    	List<WalletItem> response = walletItemRepository.findWalletIdAndType(savedWalletId, TypeEnum.SD);
+    	
+    	assertEquals(response.size(), 1);
+    	assertEquals(response.get(0).getType(), TypeEnum.SD); // garatindo  que esta trazendo o tipo passado
+    }
+    @Test
+    public void testBySumByWallet() { // metodo para somar todos itens de uma carteira
+    	Optional<Wallet> w = walletRepository.findById(savedWalletId);//
+    	 //criando uma walletItemno parametro esta 65 ea nova esta sendo trocada por 150.80( entao se tem dois walletItem na base)
+    	walletItemRepository.save(new WalletItem(null, w.get(), DATE, TYPE, DESCRIPTION, BigDecimal.valueOf(150.80)));
+    	 // metodo para somar coforme o id passadp como parametro e responsta em Long
+    	BigDecimal response = walletItemRepository.sumByWalletId(savedWalletId);
+    	
+    	assertEquals(response.compareTo(BigDecimal.valueOf(215.8)), 0); // funcao mate. do bidDecimal , ele retorna 0 se for igual, 1 para valor maior e -1 para valor negativo
+    }
+    
 }
+	
+
+

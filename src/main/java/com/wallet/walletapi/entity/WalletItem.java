@@ -1,6 +1,7 @@
 package com.wallet.walletapi.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -44,6 +45,6 @@ public class WalletItem implements Serializable {
     @NotNull
     private String descripition;
     @NotNull
-    private Long value;
+    private BigDecimal value;
     
 }

@@ -1,6 +1,7 @@
 package com.wallet.walletapi.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,6 @@ public class Wallet  implements Serializable{
 	@NotNull
 	private String name;
 	@NotNull
-	private Long value;
+	private BigDecimal value;
 
 }
