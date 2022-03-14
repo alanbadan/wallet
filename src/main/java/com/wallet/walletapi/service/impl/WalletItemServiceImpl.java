@@ -3,6 +3,7 @@ package com.wallet.walletapi.service.impl;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,11 @@ public class WalletItemServiceImpl implements WalletItemService {
 	@Override
 	public BigDecimal sumWalletId(Long wallet) {
 		return walletItemRepository.sumByWalletId(wallet);
+	}
+
+	@Override
+	public Optional<WalletItem> findById(Long id) {
+	     return walletItemRepository.findById(id);
 	}
 	
 	

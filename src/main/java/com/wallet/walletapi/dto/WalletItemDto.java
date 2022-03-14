@@ -1,5 +1,6 @@
 package com.wallet.walletapi.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
@@ -7,6 +8,11 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.wallet.walletapi.enums.TypeEnum;
+
+import lombok.Data;
+
+@Data
 public class WalletItemDto {
 	
 	private Long id;
@@ -21,6 +27,6 @@ public class WalletItemDto {
 	@Length(min = 3, message = "A descricao deve conter no minimo 3 caracteres")
 	private String description;
 	@NotNull(message = "informe um valor")
-	private Long value;
+	private BigDecimal value;
 
 }

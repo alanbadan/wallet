@@ -48,7 +48,7 @@ public class UserControllerTest { //teste andPoint User
 		BDDMockito.given(userService.save(Mockito.any(User.class))).willReturn(getMockUser());
 		                                                         //aqui é o body do getJsonPayload
 		mvc.perform(MockMvcRequestBuilders.post(URL).content(getJsonPayload(ID, EMAIL, NAME, PASSWORD)) // passando as constantes de usuario valido
-		           .contentType(MediaType.APPLICATION_JSON)
+		           .contentType(MediaType.APPLICATION_JSON)//***** nao esquecer do import static ***********
 		           .accept(MediaType.APPLICATION_JSON))
 		           .andExpect(status().isCreated()) // esperando o rwetorn 201 criado
 		           .andExpect(jsonPath("$.data.id").value(ID))// confirmando se os dados estaso cortor entre o que esta recebendo e o esperadpo
