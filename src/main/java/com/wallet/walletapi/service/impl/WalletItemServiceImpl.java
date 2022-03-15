@@ -55,6 +55,12 @@ public class WalletItemServiceImpl implements WalletItemService {
 	public Optional<WalletItem> findById(Long id) {
 	     return walletItemRepository.findById(id);
 	}
+
+	@Override
+	public void deleteById(Long id) {
+		walletItemRepository.deleteById(id);
+		
+	}
 	
 	
 	
