@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wallet.walletapi.dto.WalletItemDto;
-import com.wallet.walletapi.entity.UserWallet;
 import com.wallet.walletapi.entity.WalletItem;
 import com.wallet.walletapi.enums.TypeEnum;
 import com.wallet.walletapi.response.Response;

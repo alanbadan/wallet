@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 
 import com.wallet.walletapi.entity.WalletItem;
@@ -44,7 +42,7 @@ public class WalletItemServiceImpl implements WalletItemService {
 	}
 	@Override
 	public List<WalletItem> findByWalletAndType(Long wallet, TypeEnum type) {
-		return walletItemRepository.findWalletIdAndType(wallet, type);
+		return walletItemRepository.findByWalletIdAndType(wallet, type);
 	}
 	@Override
 	public BigDecimal sumWalletId(Long wallet) {

@@ -22,7 +22,7 @@ import com.wallet.walletapi.service.UserWalletService;
 @RequestMapping("user-wallet")
 public class UserWalletController {
 	
-	@Autowired // acessando o service para salvar novas entidades
+	@Autowired// acessando o service para salvar novas entidades
 	UserWalletService userWalletService;
 	
 	

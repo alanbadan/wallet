@@ -85,7 +85,7 @@ public class WalletItemServiceTest {
 		List<WalletItem> list = new ArrayList<>();
 		list.add(getMockWalletItem());
 		//mocakando o repositorio
-		BDDMockito.given(walletItemRepository.findWalletIdAndType(Mockito.anyLong(), Mockito.any(TypeEnum.class))).willReturn(list);
+		BDDMockito.given(walletItemRepository.findByWalletIdAndType(Mockito.anyLong(), Mockito.any(TypeEnum.class))).willReturn(list);
 		
 		List<WalletItem> response = walletItemService.findByWalletAndType(1L, TypeEnum.EN);
 		

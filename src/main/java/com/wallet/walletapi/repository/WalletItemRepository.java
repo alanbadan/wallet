@@ -17,10 +17,10 @@ public interface WalletItemRepository extends JpaRepository<WalletItem, Long> {
                      // metodo JpA filtre todos por id   e datas maiores ou iguasi as passadas no parametro Date init e menos igaual a data                                                           
 	Page<WalletItem> findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual(Long wallet, Date init, Date end, Pageable page);
 	// retornando uma lista pelo JPA ( em ambos os cadso o ID é chave ESTRANGEIRA)
-	List<WalletItem> findWalletIdAndType(Long wallet, TypeEnum type);
+	List<WalletItem> findByWalletIdAndType(Long wallet, TypeEnum type);
 	
 	//
-	@Query(value = "SELECT SUM(value) FROM WALLETITEM wi WHERE wi.wallet.id = :wallet")
+	@Query(value = "select sum(value) from WalletItem wi where wi.wallet.id = :wallet")
 	BigDecimal sumByWalletId(@Param("wallet") Long wallet);
 	
 }

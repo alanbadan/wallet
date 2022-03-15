@@ -146,7 +146,7 @@ public class WalletItemRepositoryTest {
     }
     @Test
     public void testeFindByType() {
-    	List<WalletItem> response = walletItemRepository.findWalletIdAndType(savedWalletId, TYPE);// buscando a carteira e passando a cobstatnte definida
+    	List<WalletItem> response = walletItemRepository.findByWalletIdAndType(savedWalletId, TYPE);// buscando a carteira e passando a cobstatnte definida
     	
     	assertEquals(response.size(), 1);// peagando o tambho da lista
     	assertEquals(response.get(0).getType(), TYPE);//  0 index , dando um get no response pra pegar o type e deve ser o mesmo passado no parametro
@@ -159,7 +159,7 @@ public class WalletItemRepositoryTest {
     	// salvando uma nova walletItem , se que com um tipo diferente
     	walletItemRepository.save(new WalletItem(null, w.get(), DATE, TypeEnum.SD, DESCRIPTION, VALUE));
     	// fazendo a co ndulta pelo tipo passado no parametro
-    	List<WalletItem> response = walletItemRepository.findWalletIdAndType(savedWalletId, TypeEnum.SD);
+    	List<WalletItem> response = walletItemRepository.findByWalletIdAndType(savedWalletId, TypeEnum.SD);
     	
     	assertEquals(response.size(), 1);
     	assertEquals(response.get(0).getType(), TypeEnum.SD); // garatindo  que esta trazendo o tipo passado
