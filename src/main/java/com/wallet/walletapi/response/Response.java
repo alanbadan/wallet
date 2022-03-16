@@ -23,4 +23,4 @@ public class Response<T> { // do tipo T sera utilizada no momentpo da utilizaça
 		}
 		return erros;
 	}
-}
+} 

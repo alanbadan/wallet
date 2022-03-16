@@ -9,3 +9,4 @@ public class JwtUserFactory {
 	}     // criando o user e passando para o construtor do JwtUser
 
 }
+ 
