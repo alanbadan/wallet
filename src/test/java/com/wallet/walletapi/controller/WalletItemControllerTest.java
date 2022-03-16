@@ -22,6 +22,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -73,6 +74,7 @@ public class WalletItemControllerTest {
 	}
 	
 	@Test
+	@WithMockUser
 	public void testFindBetweenDates() throws Exception { 
 		List<WalletItem> list = new ArrayList<>();//instanciando uma lista mochando as constantes
 		list.add(getMockWalletItem());
@@ -96,6 +98,7 @@ public class WalletItemControllerTest {
 			.andExpect(jsonPath("$.data.content[0].wallet").value(ID));
 	}
 	@Test
+	@WithMockUser
 	public void testFindByType() throws Exception {
 		List<WalletItem> list =  new ArrayList<>();
 		list.add(getMockWalletItem());
@@ -114,6 +117,7 @@ public class WalletItemControllerTest {
 		.andExpect(jsonPath("$.data.content[0].wallet").value(ID));
 	}
 	@Test
+	@WithMockUser
 	public void testUpdate() throws Exception{
 		
 		String description = "nova descricao";
@@ -136,6 +140,7 @@ public class WalletItemControllerTest {
 		
 	}
 	@Test
+	@WithMockUser
 	public void testUpdateWalletChange() throws Exception {
 		
 		Wallet w = new Wallet();
@@ -153,7 +158,7 @@ public class WalletItemControllerTest {
 		            
 	}
 	@Test
-//	@WithMockUser
+	@WithMockUser
 	public void testUpdateInvalidId() throws Exception {
 		
 		BDDMockito.given(walletItemService.findById(Mockito.anyLong())).willReturn(Optional.empty());
@@ -168,6 +173,7 @@ public class WalletItemControllerTest {
 	}
 	
 	@Test
+	@WithMockUser
 //	@WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
 	public void testDelete() throws JsonProcessingException, Exception {
 		
@@ -181,6 +187,7 @@ public class WalletItemControllerTest {
 	}
 	
 	@Test
+	@WithMockUser
 //	@WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
 	public void testDeleteInvalid() throws Exception {
 		
