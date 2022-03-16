@@ -53,17 +53,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean // metodo para filtro de requisições usando a classe Jwt...Filter
-	public JwtAuthenticationTokenFilter authenticationTokenFilter () throws Exception {
+	public JwtAuthenticationTokenFilter authenticationTokenFilterBean () throws Exception {
 		return new JwtAuthenticationTokenFilter();
 	}
      	 
-	@Bean // metod para configuracao das rotas
-	public void configure(HttpSecurity http) throws Exception {
+	@Override  // cofig para as rotas
+	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
 		.antMatchers("/auth/**", "/configuration/security", "/webjars/**", "/user/**") // deixando acessivel9sem token) somentes essas rotas e o jars do projeto 
 		.permitAll().anyRequest().authenticated();
-		http.addFilterBefore(authenticationTokenFilterBean, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 		http.headers().cacheControl(); // controle de cache no cabecalho
 		
 	}

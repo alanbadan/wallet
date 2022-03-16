@@ -25,24 +25,24 @@ public class JwtTokenUtil {
 	private String secret;
 	
 	@Value("{jwt.expiration}")// definido no propertities
-	private Long experiration;
+	private Long expiration;
 	
 	
 	public String getUserNameFromToken(String token) {
 	       String username;
 	       try {
-	    	   Claims claims = getClaimsFromToken(token);
+	    	   Claims claims = getClaimsFromToken(token);// pegando as infomacoes
 	    	   username = claims.getSubject();
 	       } catch (Exception e) {
 	    	   username = null;
 	       }
-	       return username;
+	       return username;// no nosso caso sra o email do usuraio que sta fazendo a requisicao
 	}
 	
 	public Date getExpirationdateFromToken(String token) {
 		Date expiration;
 		try {
-			Claims claims = getClaimsFromToken(token);
+			Claims claims = getClaimsFromToken(token);// pegando as infomacoes
 			expiration = claims.getExpiration();
 		}catch (Exception e) {
 			expiration = null;
@@ -52,14 +52,14 @@ public class JwtTokenUtil {
 	
 	private Claims getClaimsFromToken(String token) {
 		Claims claims;
-		try {
+		try {                         //pagando a chave no secret e fazemos um parse nas infomacoes e retornamos
 			claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 		}catch (Exception e) {
 			claims = null;
 		}
 		return claims;
 	}
-	
+	// metodo para verifiacr  a vidade do token 9 usando outro metodo experidetoken
 	public boolean validToken(String token) {
 		return !expiredToken(token);
 	}

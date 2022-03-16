@@ -30,24 +30,25 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	JwtTokenUtil jwtTokenUtil;
 	
 	
-	@Override
+	@Override // sod escrvcendo o metodo
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)throws ServletException, IOException {
-		String token = request.getHeader(AUTH_HEADER);
-		if(token != null && token.startsWith(BEARER_PREFIX)) {
-			token.substring(7);
+		String token = request.getHeader(AUTH_HEADER);//verificando o cabeçalho da requisicao
+		if(token != null && token.startsWith(BEARER_PREFIX)) {// verificando se é nilo e se tem o prefixo bearer
+			token.substring(7); // ignorando o prefixo e pegando somente o token em si
 		}
-		String username = jwtTokenUtil.getUserNameFromToken(token);
-		
+		String username = jwtTokenUtil.getUserNameFromToken(token);// pegando o usuario vinculado a esse token
+		                          // fazendo essa coomparacao pq ainda não se ten autenticacao
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null ) {
-			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 			
-			if(jwtTokenUtil.validToken(token)) {
+			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username); // buscando o usuario pelo email
+			
+			if(jwtTokenUtil.validToken(token)) { // verificando a vlidade do token
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}
-	      chain.doFilter(request, response);	
+	      chain.doFilter(request, response);	// proseguindo a requizicao
 	}
 
 }
