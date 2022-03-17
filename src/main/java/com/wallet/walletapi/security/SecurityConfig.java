@@ -61,8 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
-		.antMatchers("/auth/**", "/configuration/security", "/webjars/**", "/user/**") // deixando acessivel9sem token) somentes essas rotas e o jars do projeto 
-		.permitAll().anyRequest().authenticated();
+		.antMatchers("/auth/**", "/configuration/security", "/webjars/**", "/user/**", "/v2/api-docs", "/swagger-resousces/**", "/swagger-ui.html") // deixando acessivel9sem token) somentes essas rotas e o jars do projeto , e as roats do projeto para o swagger
+		.permitAll().anyRequest().authenticated();                                      //endPopint no browser localHost:8080/v2/api-docs
 		http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 		http.headers().cacheControl(); // controle de cache no cabecalho
 		
