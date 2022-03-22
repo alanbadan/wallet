@@ -8,11 +8,14 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +44,8 @@ public class WalletItemController {
 	
 	@Autowired
 	UserWalletService userWalletService;
+	
+	private static final Logger log = LoggerFactory.getLogger(WalletItemController.class);
 	
 	
 	@PostMapping
@@ -75,6 +80,8 @@ public class WalletItemController {
 	@GetMapping(value = "/type/{wallet}")
 	public ResponseEntity<Response<List<WalletItemDto>>> findByWalletIdAndType(@PathVariable("wallet") Long wallet,
 			       @RequestParam("type") String type) {
+		
+		log.info("Buscando por carteira {} e tipo {}", wallet, type); //passano oque vc quer monstrar nos colchetes
 		
 		Response<List<WalletItemDto>> response = new Response<List<WalletItemDto>>();
 		List<WalletItem> list = walletItemService.findByWalletAndType(wallet, TypeEnum.getEnum(type));
@@ -119,6 +126,7 @@ public class WalletItemController {
 		return ResponseEntity.ok().body(response);
 	}
 	@DeleteMapping(value = "/{walletItemId}")
+	@PreAuthorize("hasAnyRole('ADMIN')")// na controller não precisa passar o ROLE_ADIMN (somente no security)
 	public ResponseEntity<Response<String>> delete(@PathVariable("wallet") Long walletItemId) {
 		Response<String> response = new Response<String>();
 		

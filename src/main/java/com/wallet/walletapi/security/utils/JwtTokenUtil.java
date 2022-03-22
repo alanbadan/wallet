@@ -68,6 +68,7 @@ public class JwtTokenUtil {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
 		claims.put(CLAIN_KEY_CREATED, new Date());
+		//pegando todas as autorities e perdorrendo a lista usando a constante pronta e passando para o objetoClaims o autorites que esta vindo
 		userDetails.getAuthorities().forEach(authority -> claims.put(CLAIN_KEY_ROLE, authority.getAuthority()));
 		
 		return generateToken(claims);

@@ -1,0 +1,11 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd">
+	<!--nome metodo qu vai usar cache-->
+	<cache name="findByWalletAndType" 
+		maxEntriesLocalHeap="1000"
+		timeToLiveSeconds="3600">
+	</cache>
+</ehcache>
+
+<!-- manEntir ... quantos intnes serao alocados -->
+<!--timeTo...  valida do cache em tempo -->

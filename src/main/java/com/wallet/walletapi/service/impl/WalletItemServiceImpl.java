@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,7 @@ public class WalletItemServiceImpl implements WalletItemService {
 	private int itemsPerPage; //setendo em uma variavel o value
 
 	@Override
+	@CacheEvict(value = "findByWalletIdAndType", allEntries = true ) // ele apaga toda entrada de chache na entrada( apagando tudo cache passado no metodo) e atualizando para evitar de pegar dados atualizados
 	public WalletItem save(WalletItem walletItem) {
 		return walletItemRepository.save(walletItem);
 	}
@@ -40,6 +43,7 @@ public class WalletItemServiceImpl implements WalletItemService {
 		
 		return  walletItemRepository.findAllByWalletIdAndDateGreaterThanEqualAndDateLessThanEqual(wallet, start, end, pg);
 	}
+	@Cacheable(value =  "findByWalletAndType")// passando o metodo que vai usar o cache la no arquivo xml , pode colocar vairos metoods 
 	@Override
 	public List<WalletItem> findByWalletAndType(Long wallet, TypeEnum type) {
 		return walletItemRepository.findByWalletIdAndType(wallet, type);
@@ -55,6 +59,7 @@ public class WalletItemServiceImpl implements WalletItemService {
 	}
 
 	@Override
+	@CacheEvict(value = "findByWalletIdAndType", allEntries = true )// ele apaga toda entrada de chache na entrada( apagando tudo cache passado no metodo) e atualizando para evitar de pegar dados atualizados
 	public void deleteById(Long id) {
 		walletItemRepository.deleteById(id);
 		

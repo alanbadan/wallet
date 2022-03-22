@@ -16,6 +16,7 @@ import com.wallet.walletapi.bcrypt.Bcrypt;
 import com.wallet.walletapi.dto.UserDto;
 import com.wallet.walletapi.entity.User;
 import com.wallet.walletapi.response.Response;
+import com.wallet.walletapi.security.utils.enums.RoleEnum;
 import com.wallet.walletapi.service.UserService;
 
 @RestController
@@ -45,6 +46,7 @@ public class UserController {
 		user.setEmail(dto.getEmail());
 		user.setName(dto.getName());
 		user.setPassword(Bcrypt.gethas(dto.getPassword()));//passando a criptogracao 
+		user.setRole(RoleEnum.valueOf(dto.getRole()));//o valueof para pegar o valor vindo depois dando um get pra pegar o vl
 		return user;
 	}
 	private UserDto convertEntityToDto(User user) {  // aqui se faz o payloado de resposta
@@ -52,6 +54,7 @@ public class UserController {
 		dto.setId(user.getId());
 		dto.setEmail(user.getEmail());
 		dto.setName(user.getName());
+		dto.setRole(user.getRole().toString()); // para converte o role em string(toSring)
 	//	dto.setPassword(user.getPassword()); aqui ele retorna a senha criptogarafada no payload (descomentada), comnetada com esta ele retorna NULL , vamos no dto implematar a anotacao JsonInclude
 		return dto;
 	}

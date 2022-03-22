@@ -21,6 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wallet.walletapi.dto.UserDto;
 import com.wallet.walletapi.entity.User;
+import com.wallet.walletapi.security.utils.enums.RoleEnum;
 import com.wallet.walletapi.service.UserService;
 
 @RunWith(SpringRunner.class)
@@ -54,6 +55,7 @@ public class UserControllerTest { //teste andPoint User
 		           .andExpect(jsonPath("$.data.id").value(ID))// confirmando se os dados estaso cortor entre o que esta recebendo e o esperadpo
 		           .andExpect(jsonPath("$.data.email").value(EMAIL))// confirmando se os dados estaso cortor entre o que esta recebendo e o esperadpo
 		           .andExpect(jsonPath("$.data.name").value(NAME))// confirmando se os dados estaso cortor entre o que esta recebendo e o esperadpo
+		           .andExpect(jsonPath("$.data.role").value(RoleEnum.ROLE_ADMIN.toString()))// confirmando a role de adim depis de imp.ao jwt de Autenticacao de roles)
 		           .andExpect(jsonPath("$.data.password").doesNotExist());// para nao mostrar a senha do usuario no payload
 	}
 	//metodo para validar um usuario errado
@@ -75,6 +77,7 @@ public class UserControllerTest { //teste andPoint User
 		user.setEmail(EMAIL);
 		user.setName(NAME);
 		user.setPassword(PASSWORD);
+		user.setRole(RoleEnum.ROLE_ADMIN);//depois de imp o jwt roles de autenticacao, para fazer o assert acima
 		
 		return user;
 	}
@@ -85,6 +88,7 @@ public class UserControllerTest { //teste andPoint User
         dto.setEmail(email);
 		dto.setName(name);
 		dto.setPassword(password);	
+		dto.setRole(RoleEnum.ROLE_ADMIN.toString());//setenado depois da implementacao do jwt roles , e o dto espera uma string
 		
 		// covretendo dto em srting 
 		ObjectMapper mapper = new ObjectMapper();

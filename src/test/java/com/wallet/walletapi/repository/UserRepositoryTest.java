@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.wallet.walletapi.entity.User;
+import com.wallet.walletapi.security.utils.enums.RoleEnum;
 
 //vc escreve o test
 //tste falha
@@ -40,7 +41,8 @@ public class UserRepositoryTest {
 		User user = new User();
 		user.setName("set up user");
 		user.setPassword("Senha123");
-		user.setEmail(EMAIL);	
+		user.setEmail(EMAIL);
+		user.setRole(RoleEnum.ROLE_ADMIN); // setando a role admin pa=q foi implemtado no jwt 
 		
 		userRepository.save(user);
 	}
@@ -58,6 +60,7 @@ public class UserRepositoryTest {
 		user.setName("Teste");
 		user.setPassword("123456");
 		user.setEmail("teste@teste.com");
+		user.setRole(RoleEnum.ROLE_ADMIN); // setando a role admin pa=q foi implemtado no jwt
 		
 		User response = userRepository.save(user);
 		assertNotNull(response);

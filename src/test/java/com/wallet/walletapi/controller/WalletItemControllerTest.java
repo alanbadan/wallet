@@ -173,8 +173,8 @@ public class WalletItemControllerTest {
 	}
 	
 	@Test
-	@WithMockUser
-//	@WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
+//	@WithMockUser
+	@WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})//mockando usuario admin depois de implementar as roles de acesso.
 	public void testDelete() throws JsonProcessingException, Exception {
 		
 		BDDMockito.given(walletItemService.findById(Mockito.anyLong())).willReturn(Optional.of(new WalletItem()));
@@ -187,8 +187,8 @@ public class WalletItemControllerTest {
 	}
 	
 	@Test
-	@WithMockUser
-//	@WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
+//	@WithMockUser
+	@WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})//mockando usuario admin depois de implementar as roles de acesso.
 	public void testDeleteInvalid() throws Exception {
 		
 		BDDMockito.given(walletItemService.findById(Mockito.anyLong())).willReturn(Optional.empty());
